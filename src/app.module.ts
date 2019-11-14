@@ -24,7 +24,7 @@ export class AppModule implements NestMiddleware {
 
       // 这里的forRoutes中可以为单字符，多字符，一个RouteInfo对象或者是个类
       // .forRoutes({ path: 'cats', method: RequestMethod.GET });
-      //排除指定路由
+      // 排除指定路由
       // 有些场景下对控制器应用了中间件之后需要绕过其中几个方法，
       // 比如登录验证中间件应该放行登录路由，否则没有人能够登录成功。
       .exclude(

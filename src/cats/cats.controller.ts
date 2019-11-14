@@ -1,20 +1,29 @@
-import { Controller, Get, Req, Post, Delete, HttpCode, Header, Redirect, Query, Body, Param, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Req, Post, Delete, HttpCode, Header, Redirect, Query, Body, Param, Res, HttpStatus, UseFilters } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateCatDto } from './dtos/create-cat.dto'
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cats.interface';
+import { ForbiddenException } from 'src/common/exception/forbidden.exception';
+import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
 
 @Controller('cats')
 export class catController {
   constructor(private readonly catsService: CatsService) {} // CatsService
 
   @Post() // 接受post 并调用创建实例
+  @UseFilters(new HttpExceptionFilter())
   async create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
+  }
+  @Post()
+  @UseFilters(HttpExceptionFilter)
+  async create2(@Body() createCatDto: CreateCatDto) {
+    throw new ForbiddenException();
   }
 
   @Get() // 调用获取
   async findAll(): Promise<Cat[]> {
+    throw new ForbiddenException();
     return this.catsService.findAll();
   }
 
